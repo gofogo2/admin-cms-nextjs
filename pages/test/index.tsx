@@ -3,7 +3,7 @@ const Test: NextPage = () => {
   return (
     <div className="flex h-screen w-screen flex-col items-center mt-10">
       <div className=" p-10 text-2xl font-bold">
-        <span>@Samsung Engineering</span>
+        <span>@Test CMS Project</span>
       </div>
       <div className="flex w-64 flex-col  p-2 pt-0">
         <span className="p-1 text-sm font-normal">아이디</span>
