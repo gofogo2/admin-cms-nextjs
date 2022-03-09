@@ -17,11 +17,11 @@ export default function Layout2({
   children,
 }: LayoutProps) {
 
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setLoading(false);
-    //     }, 3000);   
-    //   }, []);
+     useEffect(() => {
+         setTimeout(() => {
+             setLoading(false);
+         }, 3000);   
+       }, []);
 
       const [loading,setLoading] = useState<boolean>(true);
     const [method, setMethod] = useState<string>("모니터링1");
