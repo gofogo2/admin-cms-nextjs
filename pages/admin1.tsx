@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const Admin1: NextPage = () => {
   return (
-    <div>
+    <div className="flex h-96 w-full items-center justify-center bg-red-400">
       <span>관리자1</span>
     </div>
   );
