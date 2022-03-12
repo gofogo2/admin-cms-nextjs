@@ -1,5 +1,7 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import Input from "../../components/Input";
 const Test: NextPage = () => {
   const router = useRouter();
 
@@ -7,35 +9,42 @@ const Test: NextPage = () => {
     router.push("/");
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    router.push("/");
+  interface EnterForm {
+    email?: string;
+    password?: string;
+  }
+
+  const onValid = (data: EnterForm) => {
+    console.log(data.email);
+    console.log(data.password);
   };
 
+  const { register, handleSubmit, reset, watch } = useForm<EnterForm>();
+  console.log(watch());
   return (
     <div className="flex flex-col items-center rounded-3xl bg-white pb-10">
       <div className=" p-10 text-2xl font-bold">
         <span>@SamsungEngineering CMS</span>
       </div>
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col  p-2 pt-0">
-          <span className="p-1 text-xs font-extrabold text-gray-500">
-            아이디
-          </span>
-          <input required className=" peer h-8 border-2" type="text"></input>
-          <span className="hidden text-xs font-medium text-red-600 peer-invalid:block">
-            아이디를 입력해주세요
-          </span>
-        </div>
-        <div className="flex w-64 flex-col  p-2 pt-0">
-          <span className="p-1 text-xs  font-extrabold text-gray-500">
-            비밀번호
-          </span>
-          <input required className=" peer h-8 border-2" type="text"></input>
-          <span className="hidden text-xs font-medium text-red-600 peer-invalid:block">
-            패스워드를 입력해주세요
-          </span>
-        </div>
+      <form onSubmit={handleSubmit(onValid)}>
+        <Input
+          register={register("email", {
+            required: true,
+          })}
+          name="아이디를 입력해주세요"
+          label="아이디"
+          type="text"
+          required
+        />
+        <Input
+          register={register("password", {
+            required: true,
+          })}
+          name="패스워드를 입력해주세요"
+          label="패스워드"
+          type="password"
+          required
+        />
         <div className="mt-5 flex items-center   justify-center ">
           <input
             className=" h-10 w-64 rounded-sm bg-gray-300 text-sm font-medium text-white hover:bg-red-200 "
