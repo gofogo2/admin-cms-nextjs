@@ -1,9 +1,13 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import Button from "../../components/Button";
 import Input from "../../components/Input";
+import useMutation from "../../libs/client/userMutation";
 const Test: NextPage = () => {
   const router = useRouter();
+
+  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
 
   const goMainPage = () => {
     router.push("/");
@@ -14,9 +18,10 @@ const Test: NextPage = () => {
     password?: string;
   }
 
-  const onValid = (data: EnterForm) => {
-    console.log(data.email);
-    console.log(data.password);
+  const onValid = (validForm: EnterForm) => {
+    console.log('wow');
+    if (loading) return;
+    enter(validForm);
   };
 
   const { register, handleSubmit, reset, watch } = useForm<EnterForm>();
@@ -46,11 +51,7 @@ const Test: NextPage = () => {
           required
         />
         <div className="mt-5 flex items-center   justify-center ">
-          <input
-            className=" h-10 w-64 rounded-sm bg-gray-300 text-sm font-medium text-white hover:bg-red-200 "
-            type="submit"
-            value="로그인"
-          />
+          <Button text={"로그인"} />
         </div>
       </form>
       <div className="mt-8 flex flex-col items-center justify-center">

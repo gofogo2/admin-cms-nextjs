@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { usePageDispatch } from "../contexts/PageContext";
-import { cls } from "../libs/utils";
+import { cls } from "../libs/client/utils";
 
 interface LayoutProps {
   title?: string;
