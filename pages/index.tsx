@@ -11,19 +11,11 @@ import Contents1 from "./contents1";
 import Monitoring1 from "./monitoring1";
 import Power1 from "./power1";
 import Enter from "./enter";
-import TestForm from "./testForm";
+import ContentList from "./contentsList";
 
 const Home: NextPage = () => {
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log("wait 3 seconds..");
-  //   }, 3000);
-  // }, []);
-
   const [method, UseMethod] = useState<string>("land");
-
   const pages = usePageState();
-
   const renderSwitch = (param: any) => {
     switch (param) {
       case "1":
@@ -32,6 +24,8 @@ const Home: NextPage = () => {
         return <Power1 />;
       case "3":
         return <Contents1 />;
+      case "31":
+        return <ContentList />;
       case "4":
         return <Admin1 />;
       default:

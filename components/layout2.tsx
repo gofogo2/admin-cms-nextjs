@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-
-
 interface LayoutProps {
   title?: string;
   canGoBack?: boolean;
@@ -20,13 +18,6 @@ export default function Layout2({
   children,
 }: LayoutProps) {
   const dispatcher = usePageDispatch();
-
-  //  useEffect(() => {
-  //      setTimeout(() => {
-  //          setLoading(false);
-  //      }, 3000);
-  //    }, []);
-
   const [loading, setLoading] = useState<boolean>(false);
   const [method, setMethod] = useState<string>("모니터링1");
   const onEmailClick = (e: any) => {
@@ -195,7 +186,7 @@ export default function Layout2({
                   name="menu-select"
                   onClick={onEmailClick}
                   id="huey2"
-                  value="3"
+                  value="31"
                   type="radio"
                   className="peer opacity-0"
                   hidden
@@ -204,7 +195,7 @@ export default function Layout2({
                   className="text-xs font-thin peer-checked:font-bold"
                   htmlFor="huey2"
                 >
-                  콘텐츠1
+                  콘텐츠리스트
                 </label>
               </div>
               <div>
@@ -221,7 +212,7 @@ export default function Layout2({
                   className="text-xs font-thin peer-checked:font-bold"
                   htmlFor="gofogo2"
                 >
-                  콘텐츠2
+                  콘텐츠등록
                 </label>
               </div>
               <div>

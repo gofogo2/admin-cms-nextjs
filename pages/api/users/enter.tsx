@@ -6,10 +6,8 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  let user;
   const { email, password } = req.body;
   if (email == "gofogo" && password == "1") {
-    console.log(user);
     return res.status(200).json({ ok: true });
   } else {
     return res

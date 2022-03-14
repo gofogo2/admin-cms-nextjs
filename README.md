@@ -2,7 +2,7 @@
 ## -React
 ## -Nextjs
 ## -TailwindCSS
-## -Asp.net Core 3.1
+## -Asp.net Core 3.1 or nextjs  
 
 ## 서버접속
 ### $ pscale auth login
@@ -16,9 +16,11 @@
 ### https://gofogo.tistory.com/135
 
 
+## scheme.prisma 동기화
+### $ npx prisma db push
 
-
-
+## db ui 확인
+### npx prisma studio
 
 
 ================== 커밋 규칙 =================

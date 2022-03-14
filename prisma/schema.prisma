@@ -2,23 +2,37 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
-
-model User{
-  id Int @id @default(autoincrement())
-  phone Int? @unique
-  email String? @unique
-  name String
-  avartar String?
+model User {
+  id       Int      @id @default(autoincrement())
+  phone    Int?     @unique
+  email    String?  @unique
+  name     String
+  avartar  String?
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+}
+
+model HistoryMedia {
+  id             Int     @id @default(autoincrement())
+  historyName    String
+  historyCaption String?
+}
+
+model HistoryContents {
+  id           Int     @id @default(autoincrement())
+  mediaID      Int
+  Desc         String?
+  fileName     String
+  fileType     String
+  contentsType Int
 }

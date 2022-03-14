@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export interface ResponseType {
   ok: boolean;
-  error?: string;
   [key: string]: any;
 }
 
