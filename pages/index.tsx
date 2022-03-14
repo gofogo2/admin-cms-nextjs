@@ -10,8 +10,7 @@ import Admin1 from "./admin1";
 import Contents1 from "./contents1";
 import Monitoring1 from "./monitoring1";
 import Power1 from "./power1";
-import Test from "./test";
-import Enter from "./test/enter";
+import Enter from "./enter";
 import TestForm from "./testForm";
 
 const Home: NextPage = () => {

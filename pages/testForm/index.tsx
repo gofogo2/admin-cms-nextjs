@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import Test from "../test";
+import Enter from "../enter";
 const TestForm: NextPage = () => {
   return (
     <div className="grid min-h-screen gap-10 bg-slate-400 py-20 px-20 lg:grid-cols-2  xl:grid-cols-3 xl:place-content-center">

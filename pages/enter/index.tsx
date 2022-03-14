@@ -3,12 +3,20 @@ import Input from "@components/Input";
 import useMutation from "@libs/client/userMutation";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-const Test: NextPage = () => {
+const Enter: NextPage = () => {
   const router = useRouter();
 
   const [enter, { loading, data, error }] = useMutation("/api/users/enter");
+
+  useEffect(() => {
+    console.log(data?.ok);
+    if (data?.ok) {
+      router.push("/");
+    }
+  }, [data, router]);
 
   const goMainPage = () => {
     router.push("/");
@@ -20,7 +28,7 @@ const Test: NextPage = () => {
   }
 
   const onValid = (validForm: EnterForm) => {
-    console.log('wow');
+    console.log("wow");
     if (loading) return;
     enter(validForm);
   };
@@ -52,8 +60,16 @@ const Test: NextPage = () => {
           required
         />
         <div className="mt-5 flex items-center   justify-center ">
-          <Button text={"로그인"} />
+          <Button text={loading ? "Loading" : "LOGIN"} />
         </div>
+        {console.log(data?.error)}
+        {data?.error != undefined ? (
+          <p className="mt-1 flex items-center justify-center text-xs font-bold text-red-700 ">
+            {data?.error}
+          </p>
+        ) : (
+          ""
+        )}
       </form>
       <div className="mt-8 flex flex-col items-center justify-center">
         <span className="text-sm">
@@ -65,4 +81,4 @@ const Test: NextPage = () => {
   );
 };
 
-export default Test;
+export default Enter;

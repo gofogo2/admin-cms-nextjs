@@ -4,6 +4,21 @@
 ## -TailwindCSS
 ## -Asp.net Core 3.1
 
+## 서버접속
+### $ pscale auth login
+### $ pscale connect admin-cms
+
+## .env 설정
+### DATABASE_URL="mysql://127.0.0.1:3306/admin-cms"
+
+
+## scoop - 설치(windows)
+### https://gofogo.tistory.com/135
+
+
+
+
+
 
 
 ================== 커밋 규칙 =================
