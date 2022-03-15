@@ -11,10 +11,8 @@
 ## .env 설정
 ### DATABASE_URL="mysql://127.0.0.1:3306/admin-cms"
 
-
 ## scoop - 설치(windows)
 ### https://gofogo.tistory.com/135
-
 
 ## scheme.prisma 동기화
 ### $ npx prisma db push
@@ -22,6 +20,8 @@
 ## db ui 확인
 ### npx prisma studio
 
+## SWR 설치
+### npm i swr --legacy-peer-deps
 
 ================== 커밋 규칙 =================
 feat : 새로운 기능에 대한 커밋

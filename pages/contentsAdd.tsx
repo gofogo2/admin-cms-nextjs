@@ -10,7 +10,7 @@ interface ModifyForm {
 }
 
 const Contents1: NextPage = () => {
-  const [apply, { loading, data }] = useMutation("/api/historys/add");
+  const [apply, { loading, data }] = useMutation("/api/historys/history");
 
   const onValid = (data: ModifyForm) => {
     console.log(data);

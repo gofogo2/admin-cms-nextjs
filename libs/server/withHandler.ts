@@ -5,23 +5,28 @@ export interface ResponseType {
   [key: string]: any;
 }
 
-export default function withHandler(
-  method: "GET" | "POST" | "DELETE",
-  fn: (req: NextApiRequest, res: NextApiResponse<ResponseType>) => void
-) {
+interface ConfigType {
+  methods: method[];
+  handler: (req: NextApiRequest, res: NextApiResponse) => void;
+}
+
+type method = "GET" | "POST" | "DELETE";
+
+export default function withHandler({ methods, handler }: ConfigType) {
   return async function (
     req: NextApiRequest,
     res: NextApiResponse<ResponseType>
   ) {
-    if (req.method !== method) {
+    console.log(`req.method:${req.method}`);
+    console.log(`method:${methods.includes(req.method as any)}`);
+    if (req.method && !methods.includes(req.method as any)) {
       console.log("405");
       return res
         .status(405)
         .json({ ok: false, error: "정상적인 접근 경로가 아닙니다." });
     }
     try {
-      console.log("계정을 체크한다.");
-      await fn(req, res);
+      await handler(req, res);
     } catch (error) {
       console.log(error);
       return res

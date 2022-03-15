@@ -7,7 +7,7 @@ import Layout2 from "../components/layout2";
 import { usePageState } from "../contexts/PageContext";
 import styles from "../styles/Home.module.css";
 import Admin1 from "./admin1";
-import Contents1 from "./contents1";
+import Contents1 from "./contentsAdd";
 import Monitoring1 from "./monitoring1";
 import Power1 from "./power1";
 import Enter from "./enter";

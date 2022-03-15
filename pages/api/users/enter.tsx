@@ -15,4 +15,4 @@ async function handler(
       .json({ ok: false, error: "계정정보가 일치하지 않습니다" });
   }
 }
-export default withHandler("POST", handler);
+export default withHandler({ methods: ["POST"], handler });
