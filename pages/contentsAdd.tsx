@@ -1,7 +1,22 @@
+import useHistoryFiles from "@libs/client/useHistoryFiles";
 import useMutation from "@libs/client/userMutation";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  LinearProgress,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import type { NextPage } from "next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 interface ModifyForm {
   id: number;
@@ -9,19 +24,111 @@ interface ModifyForm {
   historyCaption?: string;
 }
 
-const Contents1: NextPage = () => {
-  const [apply, { loading, data }] = useMutation("/api/historys/history");
+const ContentsAdd: NextPage = () => {
+  const [apply, { loading, data }] = useMutation("/api/history-files");
+  // const [apply, { loading, data }] = useMutation("/api/history-fil");
+  const { historyFiles, isLoading } = useHistoryFiles();
+  const [updatedFile, setupdatedFile] = useState("");
+  const [fileInfo, setFileInfo] = useState({ Desc: "", fileName: "" });
+  const [file, setFile] = useState([]);
+  const [pValue, setpValue] = useState(0);
+  const [isUpload, setIsUpload] = useState(false);
 
-  const onValid = (data: ModifyForm) => {
-    console.log(data);
+  const uploadFiles = async () => {
+    const formData = new FormData();
+    if (file.length != 0) {
+      const item = file.pop();
+      console.log("gofogo2222:" + item.file);
+      formData.append("file", item.file);
+      formData.append("seq", item.seq);
+      try {
+        const res = await axios.post("/api/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent: any) => {
+            let pert = (progressEvent.loaded * 100) / progressEvent.total;
+            console.log(pert);
+            setpValue(pert);
+          },
+        });
 
-    if (loading) return;
-    apply(data);
+        const { ok, result } = res.data;
+        if (file.length <= 0) {
+          //db 업로드
+          apply({ data: { Desc: fileInfo.Desc, fileName: fileInfo.fileName } });
+
+          setIsUpload(false);
+        } else {
+          uploadFiles();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
-  const click = (e: React.FormEvent<HTMLFormElement>) => {
+  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const seq = parseInt(e.target.id);
+    setFileInfo({ ...fileInfo, fileName: e.target.files[0].name });
+    if (file.length <= 0) {
+      console.log("최초등록");
+      setFile([...file, { seq: seq, file: e.target.files[0] }]);
+    } else {
+      const isModify = false;
+      const temp = [];
+      file.forEach((item, i) => {
+        if (seq == item.seq) {
+          isModify = true;
+          console.log("수정");
+          temp.push({ seq: seq, file: e.target.files[0] });
+        } else {
+          temp.push(item);
+        }
+      });
+
+      if (!isModify) {
+        console.log("등록");
+        setFile([...file, { seq: seq, file: e.target.files[0] }]);
+        //등록
+      } else {
+        setFile([...temp]);
+      }
+    }
+    file.forEach((item, i) => {
+      console.log("wow2:" + item.seq + " " + item.file.name);
+    });
+  };
+
+  const onValid = (data: ModifyForm) => {
+    // console.log(data);
+    // alert("");
+    // if (loading) return;
+    // apply(data);
+  };
+
+  const click2 = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
+    console.log("상세 상세");
+  };
+
+  const click3 = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    console.log("삭제 삭제");
+  };
+
+  const click = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    console.log(fileInfo);
     console.log("일반버튼");
+    if (file.length == 0) {
+      console.log("등록할 파일이 없습니다");
+      return;
+    } else {
+      setIsUpload(true);
+      setpValue(0);
+      uploadFiles();
+    }
   };
 
   const { register, handleSubmit, reset, watch } = useForm<ModifyForm>();
@@ -68,96 +175,67 @@ const Contents1: NextPage = () => {
             </span>
             <div className="flex w-5/6 flex-col border-b p-5 pl-2 text-xs font-medium">
               <div>
-                <table className=" flex flex-col px-5">
-                  <thead className=" flex flex-row border-2">
-                    <th className=" flex flex-[0.2] items-center justify-center border-r-2  py-3">
-                      번호
-                    </th>
-                    <th className=" flex flex-[0.7] items-center justify-center border-r-2 py-3">
-                      이름
-                    </th>
-                    <th className="flex flex-1 items-center justify-center border-r-2 py-3">
-                      파일명
-                    </th>
-                    <th className="flex flex-[0.3] items-center justify-center  py-3">
-                      삭제
-                    </th>
-                  </thead>
-                  <tbody className=" flex flex-col border-l-2 border-r-2 border-b-2 ">
-                    <tr className="flex flex-row ">
-                      <td className=" flex flex-[0.2] items-center justify-center border-r-2 py-3">
-                        1
-                      </td>
-                      <td className=" flex flex-[0.7] items-center justify-center border-r-2 py-3">
-                        테스트1
-                      </td>
-                      <td className="flex flex-1 items-center justify-center border-r-2 py-3">
-                        test.jpg
-                      </td>
-                      <td className="flex flex-[0.3] items-center justify-center py-3">
-                        <button
-                          onClick={click}
-                          className="rounded-md bg-slate-300 px-4 py-2"
-                        >
-                          <span className="text-[0.7rem] font-bold text-gray-700">
-                            삭제
-                          </span>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr className="flex flex-row ">
-                      <td className=" flex flex-[0.2] items-center justify-center border-r-2 py-3">
-                        1
-                      </td>
-                      <td className=" flex flex-[0.7] items-center justify-center border-r-2 py-3">
-                        테스트1
-                      </td>
-                      <td className="flex flex-1 items-center justify-center border-r-2 py-3">
-                        test.jpg
-                      </td>
-                      <td className="flex flex-[0.3] items-center justify-center py-3">
-                        <button
-                          onClick={click}
-                          className="rounded-md bg-slate-300 px-4 py-2"
-                        >
-                          <span className="text-[0.7rem] font-bold text-gray-700">
-                            삭제
-                          </span>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr className="flex flex-row ">
-                      <td className=" flex flex-[0.2] items-center justify-center border-r-2 py-3">
-                        1
-                      </td>
-                      <td className=" flex flex-[0.7] items-center justify-center border-r-2 py-3">
-                        테스트1
-                      </td>
-                      <td className="flex flex-1 items-center justify-center border-r-2 py-3">
-                        test.jpg
-                      </td>
-                      <td className="flex flex-[0.3] items-center justify-center py-3">
-                        <button
-                          onClick={click}
-                          className="rounded-md bg-slate-300 px-4 py-2"
-                        >
-                          <span className="text-[0.7rem] font-bold text-gray-700">
-                            삭제
-                          </span>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <TableContainer component={Paper}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">Seq</TableCell>
+                        <TableCell align="center">아이디</TableCell>
+                        <TableCell align="center">이름</TableCell>
+                        <TableCell align="center">파일명</TableCell>
+                        <TableCell align="center">관리</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {historyFiles?.map((row, i) => (
+                        <TableRow key={i + 1}>
+                          <TableCell align="center">{i + 1}</TableCell>
+                          <TableCell align="center">{row.mediaID}</TableCell>
+                          <TableCell align="center">{row.Desc}</TableCell>
+                          <TableCell align="center">{row.fileName}</TableCell>
+                          <TableCell align="center" className=" bg-red-300">
+                            <div>
+                              <button
+                                onClick={click2}
+                                className="rounded-md bg-slate-200 px-2 py-1"
+                              >
+                                상세
+                              </button>
+                              <button
+                                onClick={click3}
+                                className="ml-2 rounded-md bg-slate-200 px-2 py-1"
+                              >
+                                삭제
+                              </button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </div>
-              <div></div>
               <div className="mt-5 flex flex-col space-y-2">
                 <span>※ 1920x1080 - JPG, PNG</span>
-                <div className="flex justify-between px-5">
-                  <input type="text" /> {/* <input type="file" /> */}
+                <div className="flex items-center justify-around px-5">
+                  <input
+                    className="h-6 w-1/3"
+                    type="file"
+                    id="0"
+                    onChange={onChange}
+                  />
+                  <p>Name</p>
+                  <input
+                    className="h-6 w-1/5"
+                    value={fileInfo.Desc}
+                    onChange={(e) => {
+                      setFileInfo({ ...fileInfo, Desc: e.target.value });
+                    }}
+                    type="text"
+                  />
                   <button
                     onClick={click}
-                    className="rounded-md bg-slate-300 px-4 py-2"
+                    className="h-8 w-1/4 rounded-md bg-slate-300"
                   >
                     <span className="text-[0.7rem] font-bold text-gray-700">
                       업로드
@@ -171,22 +249,24 @@ const Contents1: NextPage = () => {
             <span className="flex w-1/6 items-center  border-r bg-neutral-100 p-3 text-xs font-medium">
               히스토리 목록
             </span>
-            <div className="flex w-5/6  flex-row items-center   justify-between border-b px-10 pl-7 text-xs font-medium">
-              <input type="text" />
-              {/* <input type="file" /> */}
-              <button className="rounded-md bg-slate-300 px-4 py-2">
-                <span className="text-[0.7rem] font-bold text-gray-700">
-                  업로드
-                </span>
-              </button>
-            </div>
+            <div className="flex w-5/6  flex-row items-center   justify-between border-b px-10 pl-7 text-xs font-medium"></div>
           </div>
         </div>
         <div>
           <input type="submit" value="가나다"></input>
         </div>
       </form>
+      <Dialog open={isUpload || loading}>
+        <DialogTitle className="px-28 pb-10">업로드 중입니다</DialogTitle>
+        <DialogContent className="flex flex-col">
+          <LinearProgress
+            className="h-10"
+            variant="determinate"
+            value={pValue}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
-export default Contents1;
+export default ContentsAdd;

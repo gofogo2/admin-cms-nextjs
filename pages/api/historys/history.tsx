@@ -24,7 +24,6 @@ async function handler(
     });
 
     if (!historyMedia) {
-      console.log("bbbb");
     } else {
       console.log(historyMedia.id);
     }

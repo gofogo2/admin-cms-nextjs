@@ -7,11 +7,12 @@ import Layout2 from "../components/layout2";
 import { usePageState } from "../contexts/PageContext";
 import styles from "../styles/Home.module.css";
 import Admin1 from "./admin1";
-import Contents1 from "./contentsAdd";
+import ContentsAdd from "./contentsAdd";
 import Monitoring1 from "./monitoring1";
 import Power1 from "./power1";
 import Enter from "./enter";
 import ContentList from "./contentsList";
+import ContentSearch from "./contentSearch";
 
 const Home: NextPage = () => {
   const [method, UseMethod] = useState<string>("land");
@@ -23,13 +24,15 @@ const Home: NextPage = () => {
       case "2":
         return <Power1 />;
       case "3":
-        return <Contents1 />;
+        return <ContentsAdd />;
       case "31":
         return <ContentList />;
+      case "32":
+        return <ContentSearch />;
       case "4":
         return <Admin1 />;
       default:
-        return <Monitoring1 />;
+        return <ContentsAdd />;
     }
   };
   useEffect(() => {

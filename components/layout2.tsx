@@ -219,16 +219,16 @@ export default function Layout2({
                 <input
                   name="menu-select"
                   onClick={onEmailClick}
-                  id="wow2"
-                  value="3"
+                  id="search"
+                  value="32"
                   type="radio"
                   className="peer opacity-0 "
                 />
                 <label
                   className=" text-xs font-thin peer-checked:font-bold"
-                  htmlFor="wow2"
+                  htmlFor="search"
                 >
-                  콘텐츠3
+                  콘텐츠검색
                 </label>
               </div>
             </ul>

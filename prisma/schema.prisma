@@ -28,11 +28,18 @@ model HistoryMedia {
   historyCaption String?
 }
 
-model HistoryContents {
+model HistoryFile {
   id           Int     @id @default(autoincrement())
   mediaID      Int
   Desc         String?
   fileName     String
   fileType     String
   contentsType Int
+}
+
+model HistoryContent {
+  id      Int     @id @default(autoincrement())
+  year    String
+  content String
+  Desc    String?
 }
