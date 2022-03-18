@@ -88,11 +88,11 @@ const ContentSearch: NextPage = () => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, i) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={i + 1}>
-                    {columns.map((column) => {
+                  <TableRow hover role="checkbox" tabIndex={-1} key={'row'+ i + 1}>
+                    {columns.map((column,j) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={i + 1} align={column.align}>
+                        <TableCell key={j + 1} align={column.align}>
                           {value}
                         </TableCell>
                       );

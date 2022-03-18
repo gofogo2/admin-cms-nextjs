@@ -23,6 +23,11 @@
 ## SWR 설치
 ### npm i swr --legacy-peer-deps
 
+## 기본실행
+### $ pscale auth login
+### $ pscale connect admin-cms
+### $ npm run dev
+
 ================== 커밋 규칙 =================
 feat : 새로운 기능에 대한 커밋
 fix : 버그 수정에 대한 커밋
