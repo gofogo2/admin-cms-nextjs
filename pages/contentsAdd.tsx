@@ -14,9 +14,10 @@ import {
   TableRow,
 } from "@mui/material";
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import client from "@libs/server/client";
 
 interface ModifyForm {
   id: number;
@@ -57,8 +58,8 @@ const ContentsAdd: NextPage = () => {
         if (file.length <= 0) {
           //db 업로드
           apply({ data: { Desc: fileInfo.Desc, fileName: fileInfo.fileName } });
-
           setIsUpload(false);
+          window.location.reload();
         } else {
           uploadFiles();
         }
@@ -113,9 +114,13 @@ const ContentsAdd: NextPage = () => {
     console.log("상세 상세");
   };
 
-  const click3 = (e: React.FormEvent<HTMLInputElement>) => {
+  const click3 = async (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log("삭제 삭제");
+    const id = e.target.id;
+    console.log(id);
+    const res = await axios.delete("/api/history-files/"+id);
+    // //삭제 수행
+    // console.log("삭제 삭제");
   };
 
   const click = (e: React.FormEvent<HTMLInputElement>) => {
@@ -202,7 +207,7 @@ const ContentsAdd: NextPage = () => {
                               >
                                 상세
                               </button>
-                              <button
+                              <button id={row.id}
                                 onClick={click3}
                                 className="ml-2 rounded-md bg-slate-200 px-2 py-1"
                               >
@@ -270,4 +275,8 @@ const ContentsAdd: NextPage = () => {
     </div>
   );
 };
+
 export default ContentsAdd;
+
+
+// const test = await client.historyFile.findMany();

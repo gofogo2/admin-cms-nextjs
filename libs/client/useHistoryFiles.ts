@@ -19,5 +19,5 @@ export default function useHistoryFiles() {
     }
   }, [data]);
 
-  return { historyFiles: data?.historyFiles, isLoading: !data && !error };
+  return {historyFiles: data?.historyFiles, isLoading: !data && !error };
 }

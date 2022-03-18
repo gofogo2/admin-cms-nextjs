@@ -3,7 +3,7 @@ import TableItemButton from "@components/TableItemButton";
 import useHistory from "@libs/client/useHistory";
 import { HistoryMedia } from "@prisma/client";
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import HistoryContent from "@components/HistoryContent";
 import {
   CircularProgress,
@@ -17,68 +17,102 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   TextField,
 } from "@mui/material";
 import TableHeader from "@components/TableHeader";
 
 const ContentSearch: NextPage = () => {
-  function createData(id: string, name: string, filename: string) {
-    return { id, name, filename };
+  const columns = [
+    { id: "seq", label: "Seq", minWidth: 170 },
+    { id: "period", label: "period", minWidth: 100 },
+    {
+      id: "content",
+      label: "Content",
+      minWidth: 170,
+      align: "right",
+    },
+  ];
+
+  function createData(seq: string, period: string, content: string) {
+    return { seq, period, content };
   }
 
   const rows = [
-    createData("1", "gofogo", "1.jpg"),
-    createData("2", "dudfufl", "fd.jpg"),
-    createData("3", "yeonwoo", "3fg.jpg"),
-    createData("4", "cheon", "ggg.jpg"),
-    createData("5", "sujin", "rere.jpg"),
+    createData("1", "1920", "블라블라블라블라블라"),
+    createData("2", "1930", "sdsdfsdf"),
+    createData("3", "1940", "cvbvcbcvb"),
+    createData("4", "1950", "ttwerwerwer"),
+    createData("5", "1960", "fghdfkbjds"),
+    createData("6", "1970", "ewrerwrwerwer"),
+    createData("7", "1980", "fgdgdfgdfg"),
+    createData("8", "1990", "werwerrwew"),
+    createData("9", "2000", "dfgfdgdfgfdgdfg"),
+    createData("10", "2010", "vcbvcbvvcbcvb"),
+    createData("11", "2020", "dgdfgdfgfdgdfgdfg"),
+    createData("12", "2022", "werwerwerwerwerwer"),
   ];
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table size="small">
+    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Seq</TableCell>
-              <TableCell align="center">아이디</TableCell>
-              <TableCell align="center">이름</TableCell>
-              <TableCell align="center">파일명</TableCell>
-              <TableCell align="center">관리</TableCell>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, i) => (
-              <TableRow key={row.name}>
-                <TableCell align="center">{i + 1}</TableCell>
-                <TableCell align="center">{row.id}</TableCell>
-                <TableCell align="center">{row.name}</TableCell>
-                <TableCell align="center">{row.filename}</TableCell>
-                <TableCell align="center" className=" bg-red-300">
-                  <div>
-                    <button className="rounded-md bg-slate-200 px-2 py-1">
-                      상세
-                    </button>
-                    <button className="ml-2 rounded-md bg-slate-200 px-2 py-1">
-                      삭제
-                    </button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, i) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={i + 1}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={i + 1} align={column.align}>
+                          {value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>
-      <Dialog open={false}>
-        <DialogTitle className="p-20">
-          업로드 중입니다dkfhjsdkfhdksjfhsdjkfhskfjh...
-        </DialogTitle>
-        <DialogContent className="flex flex-col">
-          <LinearProgress className="h-10" variant="determinate" value={50} />
-        </DialogContent>
-      </Dialog>
-    </div>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 };
 export default ContentSearch;

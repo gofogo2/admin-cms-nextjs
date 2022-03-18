@@ -32,7 +32,7 @@ const Home: NextPage = () => {
       case "4":
         return <Admin1 />;
       default:
-        return <ContentsAdd />;
+        return <ContentSearch />;
     }
   };
   useEffect(() => {
