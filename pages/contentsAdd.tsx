@@ -63,6 +63,7 @@ const ContentsAdd: NextPage = () => {
           uploadFiles();
         }
       } catch (err) {
+        console.log('레알 에러');
         console.log(err);
       }
     }
