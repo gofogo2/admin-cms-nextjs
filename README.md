@@ -14,8 +14,7 @@
 ## scoop - 설치(windows)
 ### https://gofogo.tistory.com/135
 
-## scheme.prisma 동기화
-### $ npx prisma db push
+
 
 ## db ui 확인
 ### npx prisma studio
@@ -23,10 +22,14 @@
 ## SWR 설치
 ### npm i swr --legacy-peer-deps
 
+## scheme.prisma 동기화
+### $ npx prisma db push
+
 ## 기본실행
 ### $ pscale auth login
 ### $ pscale connect admin-cms
 ### $ npm run dev
+### npx prisma studio
 
 ================== 커밋 규칙 =================
 feat : 새로운 기능에 대한 커밋

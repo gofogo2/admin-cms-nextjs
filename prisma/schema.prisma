@@ -39,7 +39,8 @@ model HistoryFile {
 
 model HistoryContent {
   id      Int     @id @default(autoincrement())
-  year    String
+  mediaID Int
+  period  String
   content String
   Desc    String?
 }

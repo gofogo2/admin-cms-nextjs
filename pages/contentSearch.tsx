@@ -25,8 +25,12 @@ import {
   TextField,
 } from "@mui/material";
 import TableHeader from "@components/TableHeader";
+import useHistoryContent from "@libs/client/useHistoryContent";
+
+
 
 const ContentSearch: NextPage = () => {
+  const { historyContent, isLoading } = useHistoryContent();
   const columns = [
     { id: "seq", label: "Seq", minWidth: 30 },
     { id: "id", label: "ID", minWidth: 30 },
@@ -93,11 +97,13 @@ const ContentSearch: NextPage = () => {
 
   return (
     <div>
+      <div>{historyContent?.length}</div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
@@ -110,7 +116,7 @@ const ContentSearch: NextPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {historyContent
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, i) => {
                   return (
@@ -125,9 +131,7 @@ const ContentSearch: NextPage = () => {
                         const value = row[column.id];
                         return (
                           <TableCell key={j + 1} align={column.align}>
-                            {value.length < 10
-                              ? value
-                              : `${value.substring(0, 20)}...`}
+                            {column.id == 'seq'?((i+page*rowsPerPage)+1): value}
                           </TableCell>
                         );
                       })}
