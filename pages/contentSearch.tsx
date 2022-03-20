@@ -42,37 +42,10 @@ const ContentSearch: NextPage = () => {
     },
   ];
 
-  function createData(
-    seq: string,
-    id: string,
-    period: string,
-    content: string
-  ) {
-    return { seq, id, period, content };
-  }
-
-  const rows = [
-    createData(
-      "1",
-      "1",
-      "1920",
-      "베베베베베베베베베베베베베베베베베베베베베베베베베베베베베베베"
-    ),
-    createData("2", "2", "1930", "sdsdfsdf"),
-    createData("3", "3", "1940", "cvbvcbcvb"),
-    createData("4", "4", "1950", "ttwerwerwer"),
-    createData("5", "5", "1960", "fghdfkbjds"),
-    createData("6", "6", "1970", "ewrerwrwerwer"),
-    createData("7", "7", "1980", "fgdgdfgdfg"),
-    createData("8", "8", "1990", "werwerrwew"),
-    createData("9", "9", "2000", "dfgfdgdfgfdgdfg"),
-    createData("10", "10", "2010", "vcbvcbvvcbcvb"),
-    createData("11", "11", "2020", "dgdfgdfgfdgdfgdfg"),
-    createData("12", "12", "2022", "werwerwerwerwerwer"),
-  ];
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [currentText, setCurrentText] = useState('');
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -85,7 +58,8 @@ const ContentSearch: NextPage = () => {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (e: React.FormEvent<HTMLInputElement>) => {
+    setCurrentText(historyContent[e.target.parentNode.id -1].content);
     setOpen(true);
   };
 
@@ -116,13 +90,14 @@ const ContentSearch: NextPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {historyContent
+              {historyContent?
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, i) => {
                   return (
                     <TableRow
-                      onClick={(e) => handleClickOpen()}
+                      onClick={(e) => handleClickOpen(e)}
                       hover
+                      id={i+1}
                       role="checkbox"
                       tabIndex={-1}
                       key={"row" + i + 1}
@@ -144,7 +119,7 @@ const ContentSearch: NextPage = () => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={historyContent?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -165,6 +140,7 @@ const ContentSearch: NextPage = () => {
             type="email"
             fullWidth
             variant="standard"
+            value={currentText}
           />
         </DialogContent>
         <DialogActions>
