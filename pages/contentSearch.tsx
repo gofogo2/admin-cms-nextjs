@@ -26,11 +26,13 @@ import {
 } from "@mui/material";
 import TableHeader from "@components/TableHeader";
 import useHistoryContent from "@libs/client/useHistoryContent";
+import useMutation from "@libs/client/userMutation";
 
 
 
 const ContentSearch: NextPage = () => {
   const { historyContent, isLoading } = useHistoryContent();
+  const [apply, { loading, data }] = useMutation("/api/history-content");
   const columns = [
     { id: "seq", label: "Seq", minWidth: 30 },
     { id: "id", label: "ID", minWidth: 30 },
@@ -45,7 +47,12 @@ const ContentSearch: NextPage = () => {
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [currentText, setCurrentText] = useState('');
+  const [current, setCurrent] = useState({id:0,content:"",period:"",mediaID:0});
+
+
+const textChange=(e:React.FormEvent<HTMLInputElement>)=>{
+      setCurrent({...current,content:e.target.value});
+}
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -59,7 +66,9 @@ const ContentSearch: NextPage = () => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = (e: React.FormEvent<HTMLInputElement>) => {
-    setCurrentText(historyContent[e.target.parentNode.id -1].content);
+    const id = e.target.parentNode.id -1;
+    console.log(`id:${id}`);
+    setCurrent({id:id+1,content: historyContent[id]?.content,mediaID: historyContent[id]?.mediaID,period: historyContent[id]?.period});
     setOpen(true);
   };
 
@@ -67,7 +76,12 @@ const ContentSearch: NextPage = () => {
     setOpen(false);
   };
 
-  const click = (e: React.FormEvent<HTMLInputElement>) => {};
+  const click = (e: React.FormEvent<HTMLInputElement>) => {
+    //api usert
+    console.log(current);
+    apply({ data: { ...current} });
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -119,7 +133,7 @@ const ContentSearch: NextPage = () => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={historyContent?.length}
+          count={historyContent == undefined?0:historyContent?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -140,12 +154,13 @@ const ContentSearch: NextPage = () => {
             type="email"
             fullWidth
             variant="standard"
-            value={currentText}
+            onChange={textChange}
+            value={current.content}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} >취소</Button>
-          <Button  onClick={handleClickOpen} >수정</Button>
+          <Button onClick={click} >수정</Button>
         </DialogActions>
       </Dialog>
     </div>

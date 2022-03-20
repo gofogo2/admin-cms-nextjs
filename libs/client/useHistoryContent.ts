@@ -18,5 +18,6 @@ export default function useHistoryContent() {
     }
   }, [data]);
 
+
   return {historyContent: data?.historyContent, isLoading: !data && !error };
 }
