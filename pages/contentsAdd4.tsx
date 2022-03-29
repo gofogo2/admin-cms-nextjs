@@ -28,7 +28,7 @@ import useHistory from "@libs/client/useHistory";
 import { WindPower } from "@mui/icons-material";
 
 const ContentsAdd: NextPage = () => {
-  const [deviceID, setDeviceID] = useState(1);
+  const [deviceID, setDeviceID] = useState(4);
 
   const { historyContent, isLoading: historyContentIsLoading } =
     useHistoryContent(deviceID);

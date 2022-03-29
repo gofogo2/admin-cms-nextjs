@@ -6,28 +6,24 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
+  console.log("가가가가");
   if (req.method === "GET") {
     const histoyMedias = await client.historyMedia.findMany();
-    console.log(histoyMedias);
     res.json({
       ok: true,
       histoyMedias,
     });
   } else if (req.method === "POST") {
-    const { historyName, historyCaption } = req.body;
-    console.log(`${historyName},${historyCaption}`);
-    const historyMedia = await client.historyMedia.create({
+    const { historyNameEng, historyNameKor, id } = req.body.titleData;
+    const historyMedia = await client.historyMedia.update({
       data: {
-        historyName,
-        historyCaption,
+        historyNameKor,
+        historyNameEng,
+      },
+      where: {
+        id,
       },
     });
-
-    if (!historyMedia) {
-    } else {
-      console.log(historyMedia.id);
-    }
-
     return res.status(200).json({ ok: true, historyMedia });
   }
 }

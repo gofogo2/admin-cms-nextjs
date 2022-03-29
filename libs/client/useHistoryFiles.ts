@@ -8,8 +8,10 @@ interface UseHistoryFilesState {
   historyFiles: HistoryFile[];
 }
 
-export default function useHistoryFiles() {
-  const { data, error } = useSWR<UseHistoryFilesState>("/api/history-files");
+export default function useHistoryFiles(id: number) {
+  const { data, error } = useSWR<UseHistoryFilesState>(
+    "/api/history-files/" + id
+  );
 
   useEffect(() => {
     if (data && !data.ok) {
@@ -19,5 +21,5 @@ export default function useHistoryFiles() {
     }
   }, [data]);
 
-  return {historyFiles: data?.historyFiles, isLoading: !data && !error };
+  return { historyFiles: data?.historyFiles, isLoading: !data && !error };
 }

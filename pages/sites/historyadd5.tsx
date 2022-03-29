@@ -1,28 +1,18 @@
+import Layout2 from "@components/layout2";
+import { usePageState } from "contexts/PageContext";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import ContentsAdd from "pages/contentsAdd";
+import ContentsAdd2 from "pages/contentsAdd2";
+import ContentsAdd3 from "pages/contentsAdd3";
+import ContentsAdd5 from "pages/contentsAdd5";
 import { useEffect, useState } from "react";
-import Layout from "../components/layout";
-import Layout2 from "../components/layout2";
-import { usePageState } from "../contexts/PageContext";
 import styles from "../styles/Home.module.css";
-import Admin1 from "./admin1";
-import ContentsAdd from "./contentsAdd";
-import Monitoring1 from "./monitoring1";
-import Power1 from "./power1";
-import Enter from "./enter";
-import ContentList from "./contentsList";
-import ContentSearch from "./contentSearch";
 
-const Home: NextPage = () => {
+const Historyadd05: NextPage = () => {
   const [method, UseMethod] = useState<string>("land");
   const pages = usePageState();
-  const renderSwitch = (param: any) => {
-    switch (param) {
-      default:
-        return <ContentsAdd />;
-    }
-  };
   useEffect(() => {
     const f = async () => {
       UseMethod(window.screen.orientation.type.toString());
@@ -37,7 +27,7 @@ const Home: NextPage = () => {
     <div>
       {method.includes("land") ? (
         <Layout2 title="고포고" hasTabBar canGoBack>
-          {renderSwitch(pages.id)}
+          <ContentsAdd5 />
         </Layout2>
       ) : (
         <span className="flex h-screen w-screen items-center justify-center bg-blue-200 text-4xl font-semibold text-slate-500 ">
@@ -48,4 +38,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Historyadd05;

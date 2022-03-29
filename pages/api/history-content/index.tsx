@@ -7,47 +7,43 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === "GET") {
-    const historyContent = await client.historyContent.findMany();
+    const historyContent = await client.historyContent.findMany({
+      orderBy: {
+        period: "asc",
+      },
+    });
     // console.log(historyContent);
     res.json({
       ok: true,
       historyContent,
     });
   } else if (req.method === "POST") {
-     console.log('aaaaaaaaaaaaaaaaaaaaaa');
-    const { mediaID, period,content,id } = req.body.data;
-    console.log(`sdfsdfsdfd period:${period} ,  content:${content}, id:${id},mediaID:${mediaID}`);
-    const item = await client.historyContent.findFirst({where:{
-      id
-    }});
-    // if(item != undefined){
-    //   const historyContent = await client.historyContent.update({
-    //     data:{
-          
+    const { mediaID, period, contentKor, contentEng, id } =
+      req.body.dataHistoryContent;
 
-    //     }, where:{
-    //       id:item.id
-    //     }
-    //   });
-    // }
-    // else
-    // {
+    console.log("mediaID   ::::: " + mediaID);
 
-    // }
+    const item = await client.historyContent.findFirst({
+      where: {
+        id,
+      },
+    });
     const historyContent = await client.historyContent.upsert({
-        create:{
-            mediaID,
-            period,
-            content,
-        },
-        update:{
-          mediaID,
-          period,
-          content,
-        },
-        where:{
-            id:id
-        }
+      create: {
+        mediaID,
+        period,
+        contentKor,
+        contentEng,
+      },
+      update: {
+        mediaID,
+        period,
+        contentKor,
+        contentEng,
+      },
+      where: {
+        id: id,
+      },
     });
     return res.status(200).json({ ok: true, historyContent });
   }

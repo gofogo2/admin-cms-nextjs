@@ -7,8 +7,10 @@ interface UseHistoryContentState {
   historyContent: HistoryContent[];
 }
 
-export default function useHistoryContent() {
-  const { data, error } = useSWR<UseHistoryContentState>("/api/history-content");
+export default function useHistoryContent(id: number) {
+  const { data, error } = useSWR<UseHistoryContentState>(
+    `/api/history-content/${id.toString()}`
+  );
 
   useEffect(() => {
     if (data && !data.ok) {
@@ -18,6 +20,5 @@ export default function useHistoryContent() {
     }
   }, [data]);
 
-
-  return {historyContent: data?.historyContent, isLoading: !data && !error };
+  return { historyContent: data?.historyContent, isLoading: !data && !error };
 }

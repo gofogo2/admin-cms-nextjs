@@ -12,35 +12,26 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
-model User {
-  id       Int      @id @default(autoincrement())
-  phone    Int?     @unique
-  email    String?  @unique
-  name     String
-  avartar  String?
-  createAt DateTime @default(now())
-  updateAt DateTime @updatedAt
-}
-
 model HistoryMedia {
-  id             Int     @id @default(autoincrement())
-  historyName    String
-  historyCaption String?
+  id             Int     @id
+  historyNameKor String
+  historyNameEng String?
 }
 
 model HistoryFile {
   id           Int     @id @default(autoincrement())
   mediaID      Int
-  Desc         String?
+  captionKor   String
+  captionEng   String?
   fileName     String
   fileType     String
   contentsType Int
 }
 
 model HistoryContent {
-  id      Int     @id @default(autoincrement())
-  mediaID Int
-  period  String
-  content String
-  Desc    String?
+  id         Int     @id @default(autoincrement())
+  mediaID    Int
+  period     String
+  contentKor String
+  contentEng String?
 }

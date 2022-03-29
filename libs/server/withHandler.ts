@@ -17,10 +17,10 @@ export default function withHandler({ methods, handler }: ConfigType) {
     req: NextApiRequest,
     res: NextApiResponse<ResponseType>
   ) {
-    console.log(`req.method:${req.method}`);
-    console.log(`method:${methods.includes(req.method as any)}`);
+    // console.log(`req.method:${req.method}`);
+    // console.log(`method:${methods.includes(req.method as any)}`);
     if (req.method && !methods.includes(req.method as any)) {
-      console.log("405");
+      // console.log("405");
       return res
         .status(405)
         .json({ ok: false, error: "정상적인 접근 경로가 아닙니다." });

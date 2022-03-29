@@ -14,15 +14,9 @@ import Enter from "./enter";
 import ContentList from "./contentsList";
 import ContentSearch from "./contentSearch";
 
-const Home: NextPage = () => {
+const Test: NextPage = () => {
   const [method, UseMethod] = useState<string>("land");
   const pages = usePageState();
-  const renderSwitch = (param: any) => {
-    switch (param) {
-      default:
-        return <ContentsAdd />;
-    }
-  };
   useEffect(() => {
     const f = async () => {
       UseMethod(window.screen.orientation.type.toString());
@@ -37,7 +31,7 @@ const Home: NextPage = () => {
     <div>
       {method.includes("land") ? (
         <Layout2 title="고포고" hasTabBar canGoBack>
-          {renderSwitch(pages.id)}
+          <ContentsAdd />
         </Layout2>
       ) : (
         <span className="flex h-screen w-screen items-center justify-center bg-blue-200 text-4xl font-semibold text-slate-500 ">
@@ -48,4 +42,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Test;

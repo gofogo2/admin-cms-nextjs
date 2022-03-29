@@ -10,7 +10,10 @@ async function handler(
     const id = req.query.id;
     const historyContent = await client.historyContent.findMany({
       where: {
-        mediaID: Number(id),
+        mediaID: +id,
+      },
+      orderBy: {
+        period: "asc",
       },
     });
     console.log(historyContent);
@@ -18,10 +21,8 @@ async function handler(
       ok: true,
       historyContent,
     });
-  }else if (req.method === "DELETE") {
+  } else if (req.method === "DELETE") {
     const id = req.query.id;
-    console.log(req);
-    console.log(id);
     await client.historyContent.delete({
       where: {
         id: Number(id),
