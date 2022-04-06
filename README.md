@@ -32,6 +32,14 @@
 ### $ npm run dev
 
 
+## env DATABASE_URL="mssql://127.0.0.1:3306/admin-cms"
+## DATABASE_URL="sqlserver://localhost:1433;database=Test;user=gofogo;password=1;trustServerCertificate=true"
+
+
+## node 설치
+## mssql 설치
+
+
 ================== 커밋 규칙 =================
 feat : 새로운 기능에 대한 커밋
 fix : 버그 수정에 대한 커밋

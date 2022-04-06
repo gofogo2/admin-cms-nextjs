@@ -25,6 +25,7 @@
     "react": "^18.0.0-rc.1",
     "react-dom": "^18.0.0-rc.1",
     "react-hook-form": "^7.27.1",
+    "read-excel-file": "5.2.28",
     "swr": "1.2.2"
   },
   "devDependencies": {

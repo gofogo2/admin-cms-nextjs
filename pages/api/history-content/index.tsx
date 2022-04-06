@@ -18,16 +18,25 @@ async function handler(
       historyContent,
     });
   } else if (req.method === "POST") {
-    const { mediaID, period, contentKor, contentEng, id } =
-      req.body.dataHistoryContent;
+    const {
+      mediaID,
+      period,
+      contentKorTop,
+      contentKorBottom,
+      contentEngTop,
+      contentEngBottom,
+      id,
+    } = req.body.dataHistoryContent;
 
     console.log("mediaID   ::::: " + mediaID);
+    const contentKor = `${contentKorTop}\r\n${contentKorBottom}`;
+    const contentEng = `${contentEngTop}\r\n${contentEngBottom}`;
 
-    const item = await client.historyContent.findFirst({
-      where: {
-        id,
-      },
-    });
+    // const item = await client.historyContent.findFirst({
+    //   where: {
+    //     id,
+    //   },
+    // });
     const historyContent = await client.historyContent.upsert({
       create: {
         mediaID,

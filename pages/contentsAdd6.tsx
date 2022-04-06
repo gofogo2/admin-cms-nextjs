@@ -67,8 +67,10 @@ const ContentsAdd: NextPage = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [current, setCurrent] = useState({
     id: 0,
-    contentKor: "",
-    contentEng: "",
+    contentKorTop: "",
+    contentEngTop: "",
+    contentKorBottom: "",
+    contentEngBottom: "",
     period: "",
     mediaID: 0,
   });
@@ -179,11 +181,17 @@ const ContentsAdd: NextPage = () => {
     },
   ];
 
-  const textChangeKor = (e: React.FormEvent<HTMLInputElement>) => {
-    setCurrent({ ...current, contentKor: e.target.value });
+  const textChangeKorTop = (e: React.FormEvent<HTMLInputElement>) => {
+    setCurrent({ ...current, contentKorTop: e.target.value });
   };
-  const textChangeEng = (e: React.FormEvent<HTMLInputElement>) => {
-    setCurrent({ ...current, contentEng: e.target.value });
+  const textChangeKorBottom = (e: React.FormEvent<HTMLInputElement>) => {
+    setCurrent({ ...current, contentKorBottom: e.target.value });
+  };
+  const textChangeEngTop = (e: React.FormEvent<HTMLInputElement>) => {
+    setCurrent({ ...current, contentEngTop: e.target.value });
+  };
+  const textChangeEngBottom = (e: React.FormEvent<HTMLInputElement>) => {
+    setCurrent({ ...current, contentEngBottom: e.target.value });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -196,18 +204,26 @@ const ContentsAdd: NextPage = () => {
   };
 
   const handleClickOpen = (e) => {
-    //실제 아이디
+    if (e.target.name == "deleteButton") {
+      return;
+    }
+
     const id = e.target.parentNode.id - 1;
     const mi = e.target.parentElement.childNodes[1].textContent;
-    debugger;
     if (id === -1) {
       return;
     }
     console.log(`id:${id}`);
+
+    const itemKor = historyContent[id]?.contentKor.split(`\r\n`);
+    const itemEng = historyContent[id]?.contentEng.split(`\r\n`);
+
     setCurrent({
       id: +mi,
-      contentKor: historyContent[id]?.contentKor,
-      contentEng: historyContent[id]?.contentEng,
+      contentKorTop: itemKor != undefined ? itemKor[0] : "",
+      contentKorBottom: itemKor != undefined ? itemKor[1] : "",
+      contentEngTop: itemEng != undefined ? itemEng[0] : "",
+      contentEngBottom: itemEng != undefined ? itemEng[1] : "",
       mediaID: historyContent[id]?.mediaID,
       period: historyContent[id]?.period,
     });
@@ -219,6 +235,7 @@ const ContentsAdd: NextPage = () => {
   };
 
   const clickContentDelete = async (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const id = e.target.id;
     const res = await axios.delete("/api/history-content/" + id);
     window.location.reload();
@@ -228,18 +245,17 @@ const ContentsAdd: NextPage = () => {
     applyhistoryContent({ dataHistoryContent: { ...current } });
     setOpen(false);
     if (loadingHistoryContent == false) {
-      //   window.location.reload();
+      window.location.reload();
     }
   };
 
   const addContentClick = (e: React.FormEvent<HTMLInputElement>) => {
-    console.log("deviceID::::::::::::::::" + deviceID);
     setCurrent({ ...current, id: 0, mediaID: deviceID });
     applyhistoryContent({
       dataHistoryContent: { ...current, id: 0, mediaID: deviceID },
     });
     if (loadingHistoryContent == false) {
-      //   window.location.reload();
+      window.location.reload();
     }
   };
 
@@ -366,7 +382,7 @@ const ContentsAdd: NextPage = () => {
             Media
           </span>
           <div className="flex w-5/6 items-center  border-b  pl-2 text-xs font-medium">
-            History Wall 1970s
+            History Wall 2020s
           </div>
         </div>
         <div className="flex h-32 w-full">
@@ -573,6 +589,7 @@ const ContentsAdd: NextPage = () => {
                                     {column.id === "management" ? (
                                       <Button
                                         id={row.id}
+                                        name="deleteButton"
                                         className="rounded-md bg-red-500"
                                         variant="contained"
                                         onClick={clickContentDelete}
@@ -613,21 +630,41 @@ const ContentsAdd: NextPage = () => {
                     autoFocus
                     margin="dense"
                     id="name"
-                    label="korean"
+                    label="한글 상단"
                     fullWidth
                     variant="standard"
-                    onChange={textChangeKor}
-                    value={current.contentKor}
+                    onChange={textChangeKorTop}
+                    value={current.contentKorTop}
                   />
                   <TextField
                     autoFocus
                     margin="dense"
                     id="name"
-                    label="english"
+                    label="한글 하단"
                     fullWidth
                     variant="standard"
-                    onChange={textChangeEng}
-                    value={current.contentEng}
+                    onChange={textChangeKorBottom}
+                    value={current.contentKorBottom}
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="영어 상단"
+                    fullWidth
+                    variant="standard"
+                    onChange={textChangeEngTop}
+                    value={current.contentEngTop}
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="영어 하단"
+                    fullWidth
+                    variant="standard"
+                    onChange={textChangeEngBottom}
+                    value={current.contentEngBottom}
                   />
                 </DialogContent>
                 <DialogActions>
@@ -637,7 +674,31 @@ const ContentsAdd: NextPage = () => {
               </Dialog>
               <div className="mt-5 flex">
                 <span className="ml-5 flex items-center justify-center">
-                  Period
+                  콘텐츠 상단 - 한국어
+                </span>
+                <TextField
+                  onChange={(e) => {
+                    setCurrent({ ...current, contentKorTop: e.target.value });
+                  }}
+                  className="w-1/4"
+                  id="standard-basic"
+                  label="Standard"
+                  variant="standard"
+                />
+                <span className="ml-5 flex items-center justify-center">
+                  콘텐츠 상단 - 영어
+                </span>
+                <TextField
+                  onChange={(e) => {
+                    setCurrent({ ...current, contentEngTop: e.target.value });
+                  }}
+                  className="w-1/4"
+                  id="standard-basic"
+                  label="Standard"
+                  variant="standard"
+                />
+                <span className="ml-5 flex items-center justify-center">
+                  기간
                 </span>
                 <TextField
                   id="standard-basic"
@@ -647,12 +708,17 @@ const ContentsAdd: NextPage = () => {
                     setCurrent({ ...current, period: e.target.value });
                   }}
                 />
+              </div>
+              <div className="mt-5 flex">
                 <span className="ml-5 flex items-center justify-center">
-                  ContentKor
+                  콘텐츠 하단 - 한국어
                 </span>
                 <TextField
                   onChange={(e) => {
-                    setCurrent({ ...current, contentKor: e.target.value });
+                    setCurrent({
+                      ...current,
+                      contentKorBottom: e.target.value,
+                    });
                   }}
                   className="w-1/4"
                   id="standard-basic"
@@ -660,11 +726,14 @@ const ContentsAdd: NextPage = () => {
                   variant="standard"
                 />
                 <span className="ml-5 flex items-center justify-center">
-                  ContentEng
+                  콘텐츠 하단 - 영어
                 </span>
                 <TextField
                   onChange={(e) => {
-                    setCurrent({ ...current, contentEng: e.target.value });
+                    setCurrent({
+                      ...current,
+                      contentEngBottom: e.target.value,
+                    });
                   }}
                   className="w-1/4"
                   id="standard-basic"

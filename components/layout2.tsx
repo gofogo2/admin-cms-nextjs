@@ -33,7 +33,7 @@ export default function Layout2({
       <div className=" flex justify-between pt-8 pb-5 shadow-lg">
         <span className="font-bold">@SAMSUNG ENGINEERING</span>
         <div className="space-x-1">
-          <span className="text-xs font-semibold">관리자님</span>
+          {/* <span className="text-xs font-semibold">관리자님</span>
           <span className="text-xs">|</span>
           <span className="text-xs font-semibold ">마이페이지</span>
           <span className="text-xs">|</span>
@@ -43,17 +43,17 @@ export default function Layout2({
           </span>
           <span className="rounded-sm bg-gray-400 p-1 text-xs text-white ">
             콘텐츠 등록 가이드
-          </span>
+          </span> */}
         </div>
       </div>
       <div></div>
       <div className="mt-6 mb-0 flex  ">
         <span className=" flex flex-[0.5] items-center border-b border-gray-300 text-[0.3rem] text-gray-500 ">
-          monitoring&gt;monitoring1
+          contents&gt;history
         </span>
         <div className="flex-[0.2]"> </div>
         <div className="flex-[4] border-b border-gray-300 font-semibold">
-          모니터링 관리
+          콘텐츠 관리
         </div>
       </div>
 
