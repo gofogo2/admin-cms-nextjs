@@ -69,7 +69,8 @@ const ContentSearch: NextPage = () => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = (e: React.FormEvent<HTMLInputElement>) => {
-    const id = e.target.parentNode.id - 1;
+    // const id = e.target.parentNode.id - 1;
+    const id = e.target.parentNode.childNodes[0].textContent - 1;
     console.log(`id:${id}`);
     setCurrent({
       id: id + 1,

@@ -35,3 +35,12 @@ model HistoryContent {
   contentKor String
   contentEng String?
 }
+
+model BookDonation {
+  id        Int      @id @default(autoincrement())
+  UserID    String
+  UserEmail String
+  Create    String
+  CreateString    String
+  createAt  DateTime @default(now())
+}

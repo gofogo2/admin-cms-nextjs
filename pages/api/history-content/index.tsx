@@ -1,5 +1,6 @@
 import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
+import { Console } from "console";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(
@@ -29,8 +30,14 @@ async function handler(
     } = req.body.dataHistoryContent;
 
     console.log("mediaID   ::::: " + mediaID);
-    const contentKor = `${contentKorTop}\r\n${contentKorBottom}`;
-    const contentEng = `${contentEngTop}\r\n${contentEngBottom}`;
+    console.log(contentKorTop);
+    console.log(contentKorBottom);
+    const contentKor = `${contentKorTop}\r\n${
+      contentKorBottom == undefined ? "" : contentKorBottom
+    }`;
+    const contentEng = `${contentEngTop}\r\n${
+      contentKorBottom == undefined ? "" : contentEngBottom
+    }`;
 
     // const item = await client.historyContent.findFirst({
     //   where: {

@@ -208,7 +208,8 @@ const ContentsAdd: NextPage = () => {
       return;
     }
 
-    const id = e.target.parentNode.id - 1;
+    // const id = e.target.parentNode.id - 1;
+    const id = e.target.parentNode.childNodes[0].textContent - 1;
     const mi = e.target.parentElement.childNodes[1].textContent;
     if (id === -1) {
       return;

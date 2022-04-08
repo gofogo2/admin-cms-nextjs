@@ -32,7 +32,7 @@
 ### $ npm run dev
 
 
-## env DATABASE_URL="mssql://127.0.0.1:3306/admin-cms"
+## env DATABASE_URL="mysql://127.0.0.1:3306/admin-cms"
 ## DATABASE_URL="sqlserver://localhost:1433;database=Test;user=gofogo;password=1;trustServerCertificate=true"
 
 

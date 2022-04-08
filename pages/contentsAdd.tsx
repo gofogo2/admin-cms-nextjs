@@ -207,8 +207,8 @@ const ContentsAdd: NextPage = () => {
     if (e.target.name == "deleteButton") {
       return;
     }
-
-    const id = e.target.parentNode.id - 1;
+    const id = e.target.parentNode.childNodes[1].textContent - 1;
+    alert(id);
     const mi = e.target.parentElement.childNodes[1].textContent;
     if (id === -1) {
       return;

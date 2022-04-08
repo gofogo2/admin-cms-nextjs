@@ -1,4 +1,3 @@
-import { ContentList } from "pages/contentsList";
 import { HistoryMedia } from "@prisma/client";
 import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
