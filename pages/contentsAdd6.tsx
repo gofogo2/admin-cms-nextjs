@@ -207,24 +207,21 @@ const ContentsAdd: NextPage = () => {
     if (e.target.name == "deleteButton") {
       return;
     }
-
-    // const id = e.target.parentNode.id - 1;
     const id = e.target.parentNode.childNodes[0].textContent - 1;
     const mi = e.target.parentElement.childNodes[1].textContent;
     if (id === -1) {
       return;
     }
-    console.log(`id:${id}`);
 
     const itemKor = historyContent[id]?.contentKor.split(`\r\n`);
     const itemEng = historyContent[id]?.contentEng.split(`\r\n`);
 
     setCurrent({
       id: +mi,
-      contentKorTop: itemKor != undefined ? itemKor[0] : "",
-      contentKorBottom: itemKor != undefined ? itemKor[1] : "",
-      contentEngTop: itemEng != undefined ? itemEng[0] : "",
-      contentEngBottom: itemEng != undefined ? itemEng[1] : "",
+      contentKorTop: itemKor[0] != undefined ? itemKor[0] : "",
+      contentKorBottom: itemKor[1] != undefined ? itemKor[1] : "",
+      contentEngTop: itemEng[0] != undefined ? itemEng[0] : "",
+      contentEngBottom: itemEng[1] != undefined ? itemEng[1] : "",
       mediaID: historyContent[id]?.mediaID,
       period: historyContent[id]?.period,
     });
@@ -232,7 +229,65 @@ const ContentsAdd: NextPage = () => {
   };
 
   const handleClose = () => {
+    setCurrent({
+      id: 0,
+      contentKorTop: "",
+      contentKorBottom: "",
+      contentEngTop: "",
+      contentEngBottom: "",
+      period: "",
+      mediaID: deviceID,
+    });
     setOpen(false);
+  };
+
+  const click_down_content = async (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const id = e.target.id.split(`_`)[1];
+    console.log(id);
+    if (historyContent?.length === +id) {
+      //마지막
+      console.log("변화없음");
+    } else {
+      //순서변경
+      //id 와 id-1의 값을 변경
+      console.log("나머지");
+      const firstItem = historyContent?.[+id - 1];
+      const secondsItem = historyContent?.[+id];
+      const item = {
+        first: {
+          id: firstItem.id,
+          seq: firstItem.seq,
+        },
+        seconds: { id: secondsItem.id, seq: secondsItem.seq },
+      };
+      const res = await axios.post("/api/history-content/order", item);
+      // window.location.reload();
+    }
+  };
+  const click_up_content = async (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const id = e.target.id.split(`_`)[1];
+    console.log(id);
+    if (+id <= 1) {
+      console.log("변화없음");
+    } else {
+      //순서변경
+      //id 와 id+1의 값을 변경
+      console.log("나머지");
+      const firstItem = historyContent?.[+id - 1];
+      const secondsItem = historyContent?.[+id - 2];
+      const item = {
+        first: {
+          id: firstItem.id,
+          seq: firstItem.seq,
+        },
+        seconds: { id: secondsItem.id, seq: secondsItem.seq },
+      };
+
+      const res = await axios.post("/api/history-content/order", item);
+      // window.location.reload();
+    }
   };
 
   const clickContentDelete = async (e: React.FormEvent<HTMLInputElement>) => {
@@ -251,6 +306,20 @@ const ContentsAdd: NextPage = () => {
   };
 
   const addContentClick = (e: React.FormEvent<HTMLInputElement>) => {
+    if (current.contentKorTop == "") {
+      console.log("no contentKorTop");
+      alert("콘텐츠 한글 정보를 입력해주세요.");
+      return;
+    } else if (current.contentEngTop == "") {
+      console.log("no contentEngTop");
+      alert("콘텐츠 영어 정보를 입력해주세요.");
+      return;
+    } else if (current.period == "") {
+      console.log("no current.period");
+      alert("연도 정보를 입력해주세요.");
+      return;
+    }
+
     setCurrent({ ...current, id: 0, mediaID: deviceID });
     applyhistoryContent({
       dataHistoryContent: { ...current, id: 0, mediaID: deviceID },
@@ -383,7 +452,7 @@ const ContentsAdd: NextPage = () => {
             Media
           </span>
           <div className="flex w-5/6 items-center  border-b  pl-2 text-xs font-medium">
-            History Wall 2020s
+            History Wall 1970s
           </div>
         </div>
         <div className="flex h-32 w-full">
@@ -457,7 +526,7 @@ const ContentsAdd: NextPage = () => {
                       <TableCell align="center">Caption Kor</TableCell>
                       <TableCell align="center">Caption Eng</TableCell>
                       <TableCell align="center">Filename</TableCell>
-                      <TableCell align="center">Management</TableCell>
+                      <TableCell align="center">관리</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -588,18 +657,39 @@ const ContentsAdd: NextPage = () => {
                                       ? i + page * rowsPerPage + 1
                                       : value}
                                     {column.id === "management" ? (
-                                      <Button
-                                        id={row.id}
-                                        name="deleteButton"
-                                        className="rounded-md bg-red-500"
-                                        variant="contained"
-                                        onClick={clickContentDelete}
-                                      >
-                                        삭제
-                                      </Button>
+                                      <div className="w-30 flex">
+                                        <Button
+                                          id={`up_${row.seq}`}
+                                          name="deleteButton"
+                                          onClick={click_up_content}
+                                          variant="contained"
+                                          className="ml-2 bg-blue-600"
+                                        >
+                                          ▲
+                                        </Button>
+                                        <Button
+                                          id={`down_${row.seq}`}
+                                          name="deleteButton"
+                                          onClick={click_down_content}
+                                          variant="contained"
+                                          className="ml-2 bg-blue-600"
+                                        >
+                                          ▼
+                                        </Button>
+                                        <Button
+                                          id={row.id}
+                                          name="deleteButton"
+                                          className="ml-2 rounded-md bg-red-500"
+                                          variant="contained"
+                                          onClick={clickContentDelete}
+                                        >
+                                          삭제
+                                        </Button>
+                                      </div>
                                     ) : (
                                       ""
                                     )}
+                                    {}
                                   </TableCell>
                                 );
                               })}

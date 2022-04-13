@@ -29,15 +29,9 @@ const Test: NextPage = () => {
 
   return (
     <div>
-      {method.includes("land") ? (
-        <Layout2 title="고포고" hasTabBar canGoBack>
-          <ContentsAdd />
-        </Layout2>
-      ) : (
-        <span className="flex h-screen w-screen items-center justify-center bg-blue-200 text-4xl font-semibold text-slate-500 ">
-          가로모드로 사용해주세요
-        </span>
-      )}
+      <Layout2 title="고포고" hasTabBar canGoBack>
+        <ContentsAdd />
+      </Layout2>
     </div>
   );
 };

@@ -1,4 +1,6 @@
 import { cls } from "@libs/client/utils";
+import { Button } from "@mui/material";
+import axios from "axios";
 import { usePageDispatch } from "contexts/PageContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -25,8 +27,9 @@ export default function Layout2({
     router.push(`/${e.target.value}`);
   };
   const router = useRouter();
-  const onClick = () => {
-    router.back();
+  const onClick = async () => {
+    await axios.post("/api/clients", "");
+    window.location.reload();
   };
   return !loading ? (
     <div className="px-5">
@@ -40,10 +43,13 @@ export default function Layout2({
           <span className="text-xs  font-semibold">로그아웃</span>
           <span className="rounded-sm bg-gray-400 p-1 text-xs text-white ">
             사용자 매뉴얼
-          </span>
-          <span className="rounded-sm bg-gray-400 p-1 text-xs text-white ">
-            콘텐츠 등록 가이드
           </span> */}
+          <Button
+            className="rounded-sm bg-red-700 p-1 text-sm text-white "
+            onClick={onClick}
+          >
+            히스토리 연도 콘텐츠 초기화
+          </Button>
         </div>
       </div>
       <div></div>
