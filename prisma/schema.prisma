@@ -30,6 +30,7 @@ model HistoryFile {
 
 model HistoryContent {
   id         Int     @id @default(autoincrement())
+  seq        Int?
   mediaID    Int
   period     String
   contentKor String
@@ -37,10 +38,10 @@ model HistoryContent {
 }
 
 model BookDonation {
-  id        Int      @id @default(autoincrement())
-  UserID    String
-  UserEmail String
-  Create    String
-  CreateString    String
-  createAt  DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  UserID       String
+  UserEmail    String
+  Create       String
+  CreateString String
+  createAt     DateTime @default(now())
 }

@@ -10,7 +10,7 @@ async function handler(
   if (req.method === "GET") {
     const historyContent = await client.historyContent.findMany({
       orderBy: {
-        period: "asc",
+        seq: "asc",
       },
     });
     // console.log(historyContent);
@@ -29,9 +29,13 @@ async function handler(
       id,
     } = req.body.dataHistoryContent;
 
-    console.log("mediaID   ::::: " + mediaID);
-    console.log(contentKorTop);
-    console.log(contentKorBottom);
+    const cnt =
+      (await client.historyContent.count({
+        where: {
+          mediaID,
+        },
+      })) + 1;
+
     const contentKor = `${contentKorTop}\r\n${
       contentKorBottom == undefined ? "" : contentKorBottom
     }`;
@@ -50,6 +54,7 @@ async function handler(
         period,
         contentKor,
         contentEng,
+        seq: cnt,
       },
       update: {
         mediaID,

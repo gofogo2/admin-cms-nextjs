@@ -24,7 +24,7 @@ async function handler(
         mediaID: Number(id),
       },
       orderBy: {
-        period: "asc",
+        seq: "asc",
       },
     });
     let historyMedia = await client.historyMedia.findFirst({
@@ -52,44 +52,6 @@ async function handler(
 
     // console.log(historyContent);
     return res.status(200).json({ historyMedia: ssss });
-  } else if (req.method === "POST") {
-    console.log("aaaa");
-    console.log(req.body);
-    console.log(req.query.id);
-
-    const map = {
-      mediaID: "mediaID",
-      period: "period",
-      contentKor: "contentKor",
-      contentEng: "contentEng",
-    };
-
-    const schema = {
-      mediaID: {
-        prop: "mediaID",
-        type: Number,
-      },
-      period: {
-        prop: "period",
-        type: String,
-      },
-      contentKor: {
-        prop: "contentKor",
-        type: String,
-      },
-      contentEng: {
-        prop: "contentEng",
-        type: String,
-      },
-    };
-    xlsxFile("./Data.xlsx", { sheet: +req.query.id, schema }).then(
-      async ({ rows }) => {
-        console.log(rows);
-
-        await client.historyContent.createMany({ data: [...rows] });
-      }
-    );
-    return res.status(200).json({ ok: true });
   }
 }
 export default withHandler({ methods: ["GET", "POST", "DELETE"], handler });
