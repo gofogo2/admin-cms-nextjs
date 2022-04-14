@@ -16,6 +16,7 @@ async function handler(
     res.json({
       ok: true,
       bookDonations,
+      count: bookDonations.length,
     });
   } else if (req.method === "POST") {
     // console.log("req.body   ::::: " + req.body.UserID);
@@ -30,7 +31,9 @@ async function handler(
         CreateString,
       },
     });
-    return res.status(200).json({ ok: true, bookDonation });
+    return res
+      .status(200)
+      .json({ ok: true, bookDonation, count: bookDonation });
   }
 }
 export default withHandler({ methods: ["GET", "POST"], handler });
