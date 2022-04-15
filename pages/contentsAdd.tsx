@@ -262,7 +262,7 @@ const ContentsAdd: NextPage = () => {
         seconds: { id: secondsItem.id, seq: secondsItem.seq },
       };
       const res = await axios.post("/api/history-content/order", item);
-      // window.location.reload();
+      window.location.reload();
     }
   };
   const click_up_content = async (e: React.FormEvent<HTMLInputElement>) => {
@@ -286,7 +286,7 @@ const ContentsAdd: NextPage = () => {
       };
 
       const res = await axios.post("/api/history-content/order", item);
-      // window.location.reload();
+      window.location.reload();
     }
   };
 
