@@ -31,6 +31,11 @@ export default function Layout2({
     await axios.post("/api/clients", "");
     window.location.reload();
   };
+
+  const GoPageBook = async () => {
+    router.push("/output/book");
+  };
+
   return !loading ? (
     <div className="px-5">
       <div className=" flex justify-between pt-8 pb-5 shadow-lg">
@@ -49,6 +54,12 @@ export default function Layout2({
             onClick={onClick}
           >
             히스토리 연도 콘텐츠 초기화
+          </Button>
+          <Button
+            className="rounded-sm bg-green-400 p-1 text-sm text-white "
+            onClick={GoPageBook}
+          >
+            북 도네이션 체험 목록 보기
           </Button>
         </div>
       </div>

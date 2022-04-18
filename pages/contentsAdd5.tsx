@@ -46,11 +46,14 @@ const ContentsAdd: NextPage = () => {
 
   const { histoyMedia, isLoading: historyaLoading } = useHistory(deviceID);
 
-  const { historyFiles, isLoading } = useHistoryFiles(deviceID);
+  const { historyFiles, isLoading: historyFilesLoading } =
+    useHistoryFiles(deviceID);
 
   const [fileInfo, setFileInfo] = useState({
-    captionEng: "",
-    captionKor: "",
+    captionEngTop: "",
+    captionEngBottom: "",
+    captionKorTop: "",
+    captionKorBottom: "",
     fileName: "",
   });
 
@@ -103,8 +106,8 @@ const ContentsAdd: NextPage = () => {
           console.log("result: " + result);
           applyHistoryFile({
             data: {
-              captionKor: fileInfo.captionKor,
-              captionEng: fileInfo.captionEng,
+              captionKor: `${fileInfo.captionKorTop}\r\n${fileInfo.captionKorBottom}`,
+              captionEng: `${fileInfo.captionEngTop}\r\n${fileInfo.captionEngBottom}`,
               fileName: result,
               mediaID: deviceID,
             },
@@ -262,7 +265,7 @@ const ContentsAdd: NextPage = () => {
         seconds: { id: secondsItem.id, seq: secondsItem.seq },
       };
       const res = await axios.post("/api/history-content/order", item);
-      // window.location.reload();
+      window.location.reload();
     }
   };
   const click_up_content = async (e: React.FormEvent<HTMLInputElement>) => {
@@ -286,7 +289,7 @@ const ContentsAdd: NextPage = () => {
       };
 
       const res = await axios.post("/api/history-content/order", item);
-      // window.location.reload();
+      window.location.reload();
     }
   };
 
@@ -360,8 +363,14 @@ const ContentsAdd: NextPage = () => {
   const clickTitle = (e: React.FormEvent<HTMLInputElement>) => {
     titleApply({
       titleData: {
-        historyNameEng: `${titleInfo.titleEngTop}\r\n${titleInfo.titleEngBottom}`,
-        historyNameKor: `${titleInfo.titleKorTop}\r\n${titleInfo.titleKorBottom}`,
+        historyNameEng:
+          titleInfo.titleEngBottom == undefined
+            ? `${titleInfo.titleEngTop}`
+            : `${titleInfo.titleEngTop}\r\n${titleInfo.titleEngBottom}`,
+        historyNameKor:
+          titleInfo.titleKorBottom == undefined
+            ? `${titleInfo.titleKorTop}`
+            : `${titleInfo.titleKorTop}\r\n${titleInfo.titleKorBottom}`,
         id: deviceID,
       },
     });
@@ -452,17 +461,17 @@ const ContentsAdd: NextPage = () => {
             Media
           </span>
           <div className="flex w-5/6 items-center  border-b  pl-2 text-xs font-medium">
-            History Wall 1970s
+            History Wall 2010s
           </div>
         </div>
         <div className="flex h-32 w-full">
           <span className="flex w-1/6 items-center border-r border-b bg-neutral-100 p-3 text-xs font-medium">
             Title
           </span>
-          <div className="  flex w-5/6 items-center  border-b pl-2 text-xs font-medium">
+          <div className="  mr-8 flex w-5/6  items-center justify-around border-b pl-2 text-xs font-medium">
             <div className="w-2/5 ">
               <div className="flex  items-center">
-                <span className="ml-5">타이틀 상단 - 한국어</span>
+                <span className="ml-5">타이틀 - 한국어</span>
                 <TextField
                   onChange={changedTitleKorTop}
                   value={titleInfo.titleKorTop}
@@ -470,7 +479,7 @@ const ContentsAdd: NextPage = () => {
                   variant="standard"
                 ></TextField>
               </div>
-              <div className="mt-3 flex items-center">
+              <div className="mt-3 flex hidden items-center">
                 <span className="ml-5 ">타이틀 하단 - 한국어</span>
                 <TextField
                   variant="standard"
@@ -503,7 +512,7 @@ const ContentsAdd: NextPage = () => {
               </div>
             </div>
             <Button
-              className="ml-5 h-1/2 w-1/6 bg-slate-400"
+              className="ml-5 h-1/2 w-1/12 bg-slate-400 "
               variant="contained"
               onClick={clickTitle}
             >
@@ -580,27 +589,55 @@ const ContentsAdd: NextPage = () => {
                   id="0"
                   onChange={onChange}
                 />
-                <p className="ml-5 ">캡션 한글</p>
+                <p className="ml-5">캡션 상단 - 한글</p>
 
                 <TextField
                   variant="standard"
                   onChange={(e) => {
-                    setFileInfo({ ...fileInfo, captionKor: e.target.value });
+                    setFileInfo({ ...fileInfo, captionKorTop: e.target.value });
                   }}
-                  value={fileInfo.captionKor}
+                  value={fileInfo.captionKorTop}
                   className="ml-2 h-full w-1/4 justify-center"
                 ></TextField>
-                <p className="ml-5">캡션 영어</p>
+                <p className="ml-5">캡션 상단 - 영어</p>
                 <TextField
                   variant="standard"
                   className="ml-2 h-full w-1/4 justify-center "
-                  value={fileInfo.captionEng}
+                  value={fileInfo.captionEngTop}
                   onChange={(e) => {
-                    setFileInfo({ ...fileInfo, captionEng: e.target.value });
+                    setFileInfo({ ...fileInfo, captionEngTop: e.target.value });
+                  }}
+                ></TextField>
+                <div className="ml-12 w-1/12" />
+              </div>
+              <div className="flex items-center justify-center px-5">
+                <div className="w-1/6"></div>
+                <p className="ml-5 ">캡션 하단 - 한글</p>
+                <TextField
+                  variant="standard"
+                  onChange={(e) => {
+                    setFileInfo({
+                      ...fileInfo,
+                      captionKorBottom: e.target.value,
+                    });
+                  }}
+                  value={fileInfo.captionKorBottom}
+                  className="ml-2 h-full w-1/4 justify-center"
+                ></TextField>
+                <p className="ml-5 ">캡션 하단 - 영어</p>
+                <TextField
+                  variant="standard"
+                  className="ml-2 h-full w-1/4 justify-center "
+                  value={fileInfo.captionEngBottom}
+                  onChange={(e) => {
+                    setFileInfo({
+                      ...fileInfo,
+                      captionEngBottom: e.target.value,
+                    });
                   }}
                 ></TextField>
                 <Button
-                  className="ml-12 h-16 w-1/6 bg-slate-400"
+                  className="ml-12 h-16 w-1/12 bg-slate-400"
                   variant="contained"
                   onClick={click_File}
                 >
@@ -802,7 +839,7 @@ const ContentsAdd: NextPage = () => {
               </div>
               <div className="mt-5 flex">
                 <span className="ml-5 flex items-center justify-center">
-                  콘텐츠 하단 - 한국어
+                  콘텐츠 캡션 - 한국어
                 </span>
                 <TextField
                   onChange={(e) => {
