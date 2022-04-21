@@ -1,6 +1,5 @@
 import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
-import { Console } from "console";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(
@@ -27,14 +26,27 @@ async function handler(
       contentEngTop,
       contentEngBottom,
       id,
+      cnt,
     } = req.body.dataHistoryContent;
 
-    const cnt =
-      (await client.historyContent.count({
-        where: {
-          mediaID,
-        },
-      })) + 1;
+    let count = 0;
+
+    if (cnt == undefined || cnt == "" || cnt == "0") {
+    } else {
+      count = +cnt - 1;
+    }
+
+    const currentCnt = await client.historyContent.count({
+      where: {
+        mediaID,
+      },
+    });
+
+    if (count > currentCnt) {
+      count = currentCnt;
+    }
+
+    // console.log(`count: ${count}`);
 
     const contentKor = `${contentKorTop}\r\n${
       contentKorBottom == undefined ? "" : contentKorBottom
@@ -43,29 +55,70 @@ async function handler(
       contentKorBottom == undefined ? "" : contentEngBottom
     }`;
 
-    // const item = await client.historyContent.findFirst({
+    // const historyContent = await client.historyContent.upsert({
+    //   create: {
+    //     mediaID,
+    //     period,
+    //     contentKor,
+    //     contentEng,
+    //     seq: currentCnt,
+    //   },
+    //   update: {
+    //     mediaID,
+    //     period,
+    //     contentKor,
+    //     contentEng,
+    //   },
     //   where: {
-    //     id,
+    //     id: id,
     //   },
     // });
-    const historyContent = await client.historyContent.upsert({
-      create: {
-        mediaID,
-        period,
-        contentKor,
-        contentEng,
-        seq: cnt,
-      },
-      update: {
-        mediaID,
-        period,
-        contentKor,
-        contentEng,
-      },
+
+    let list = await client.historyContent.findMany({
       where: {
-        id: id,
+        mediaID,
       },
     });
+
+    await client.historyContent.deleteMany();
+
+    // console.log(list);
+
+    let newList = [];
+    for (let index = 0; index < list.length; index++) {
+      if (index < count) {
+        //0, 1, 2
+        console.log("작을때");
+        await client.historyContent.create({
+          data: { ...list[index], id: undefined, seq: index + 1 },
+        });
+      } else if (count == index) {
+        console.log("같을떄");
+        //3
+        await client.historyContent.create({
+          data: { mediaID, period, contentKor, contentEng, seq: +cnt },
+        });
+      } else {
+        console.log("클때");
+        console.log(
+          `index: ${index} count: ${count} data:${list[index].contentKor}`
+        );
+        await client.historyContent.create({
+          data: { ...list[index - 1], id: undefined, seq: index + 1 },
+        });
+      }
+    }
+
+    if (count == currentCnt) {
+      await client.historyContent.create({
+        data: { mediaID, period, contentKor, contentEng, seq: currentCnt + 1 },
+      });
+    } else {
+      await client.historyContent.create({
+        data: { ...list[currentCnt - 1], id: undefined, seq: currentCnt + 1 },
+      });
+    }
+
     return res.status(200).json({ ok: true, historyContent });
   }
 }

@@ -50,6 +50,7 @@ const ContentsAdd: NextPage = () => {
     useHistoryFiles(deviceID);
 
   const [fileInfo, setFileInfo] = useState({
+    cnt: "1",
     captionEngTop: "",
     captionEngBottom: "",
     captionKorTop: "",
@@ -70,6 +71,7 @@ const ContentsAdd: NextPage = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [current, setCurrent] = useState({
     id: 0,
+    cnt: "1",
     contentKorTop: "",
     contentEngTop: "",
     contentKorBottom: "",
@@ -79,6 +81,7 @@ const ContentsAdd: NextPage = () => {
   });
 
   const [open, setOpen] = React.useState(false);
+  const [topOpen, setTopOpen] = React.useState(false);
 
   const uploadFiles = async () => {
     const formData = new FormData();
@@ -608,7 +611,18 @@ const ContentsAdd: NextPage = () => {
                     setFileInfo({ ...fileInfo, captionEngTop: e.target.value });
                   }}
                 ></TextField>
-                <div className="ml-12 w-1/12" />
+                <div className="ml-12 flex w-1/12 items-center justify-center">
+                  <p>순서</p>
+                  <TextField
+                    className="w-10"
+                    onChange={(e) => {
+                      setFileInfo({
+                        ...fileInfo,
+                        cnt: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
               </div>
               <div className="flex items-center justify-center px-5">
                 <div className="w-1/6"></div>
@@ -749,6 +763,59 @@ const ContentsAdd: NextPage = () => {
                 />
               </Paper>
               <Dialog open={open}>
+                <DialogTitle>Top 영역 수정</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    히스토리 콘텐츠의 변경 내용을 입력해주세요
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="한글 상단"
+                    fullWidth
+                    variant="standard"
+                    onChange={textChangeKorTop}
+                    value={current.contentKorTop}
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="한글 하단"
+                    fullWidth
+                    variant="standard"
+                    onChange={textChangeKorBottom}
+                    value={current.contentKorBottom}
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="영어 상단"
+                    fullWidth
+                    variant="standard"
+                    onChange={textChangeEngTop}
+                    value={current.contentEngTop}
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="영어 하단"
+                    fullWidth
+                    variant="standard"
+                    onChange={textChangeEngBottom}
+                    value={current.contentEngBottom}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>취소</Button>
+                  <Button onClick={modifyContentClick}>수정</Button>
+                </DialogActions>
+              </Dialog>
+
+              <Dialog open={topOpen}>
                 <DialogTitle>수정</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
@@ -800,6 +867,7 @@ const ContentsAdd: NextPage = () => {
                   <Button onClick={modifyContentClick}>수정</Button>
                 </DialogActions>
               </Dialog>
+
               <div className="mt-5 flex">
                 <span className="ml-5 flex items-center justify-center">
                   콘텐츠 상단 - 한국어
@@ -836,6 +904,16 @@ const ContentsAdd: NextPage = () => {
                     setCurrent({ ...current, period: e.target.value });
                   }}
                 />
+
+                <span className="ml-5 flex  items-center justify-center">
+                  순서
+                </span>
+                <TextField
+                  className="w-10"
+                  onChange={(e) => {
+                    setCurrent({ ...current, cnt: e.target.value });
+                  }}
+                ></TextField>
               </div>
               <div className="mt-5 flex">
                 <span className="ml-5 flex items-center justify-center">

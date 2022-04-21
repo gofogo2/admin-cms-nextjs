@@ -64,7 +64,7 @@ export default function Layout2({
         </div>
       </div>
       <div></div>
-      <div className="mt-6 mb-0 flex  ">
+      <div className="mt-6 mb-0 flex">
         <span className=" flex flex-[0.5] items-center border-b border-gray-300 text-[0.3rem] text-gray-500 ">
           contents&gt;history
         </span>
